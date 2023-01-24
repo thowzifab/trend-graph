@@ -79,11 +79,12 @@
     </nav>
     <!-- Navbar -->
 
-    <div class="d-grid">
-      <div class="p-4">
-
-        <canvas id="line-chart" height="100"></canvas>
-
+    <div class="row p-4">
+      <div class="col-md-6">
+        <canvas id="line-chart" height="200"></canvas>
+      </div>
+      <div class="col-md-6">
+        <canvas id="bar-chart" height="200"></canvas>
       </div>
     </div>
 
@@ -102,13 +103,12 @@
       const response = await fetch('https://reqres.in/api/unknown');
       const data = await response.json();
       length = data.data.length;
-
       names = [];
       years = [];
       colors = [];
       for (i = 0; i < length; i++) {
         names.push(data.data[i].name);
-        names = names.map(function(x){ return x.toUpperCase(); })
+        names = names.map(function (x) { return x.toUpperCase(); })
         years.push(data.data[i].year);
         colors.push(data.data[i].color);
         console.log(names)
@@ -133,7 +133,7 @@
           legend: { display: false },
           title: {
             display: true,
-            text: 'Colors trend over the years'
+            text: 'Chart A - Colors trend over the years'
           },
           scales: {
             yAxes: [{
@@ -144,7 +144,42 @@
           }
         }
       });
-
+      new Chart(document.getElementById("bar-chart"), {
+        type: 'horizontalBar',
+        data: {
+          labels: names,
+          datasets: [
+            {
+              axis: 'y',
+              fill: false,
+              borderColor: "#8e5ea2",
+              backgroundColor: colors,
+              borderWidth: 1,
+              data: years
+            }
+          ]
+        },
+        options: {
+          indexAxis: 'y',
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Chart B - Colors trend over the years'
+          },
+          scales: {
+            xAxes: [{
+              ticks: {
+                stepSize: 1
+              }
+            }],
+            yAxes: [{
+              ticks: {
+                reverse: true,
+              }
+            }]
+          }
+        }
+      });
     }
 
   </script>
